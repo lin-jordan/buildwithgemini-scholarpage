@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScholarPage — Professor Paper Interactive Site Creator</title>
+  <!-- Google Fonts & Chart.js -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg-main: #F9F8F6;
+      --bg-card: #FFFFFF;
+      --bg-sidebar: #F3F1EC;
+      --text-main: #1A1918;
+      --text-muted: #6B6863;
+      --border-color: #E2DFD7;
+      --primary-accent: #0F52BA; /* Sapphire Academic */
+      --accent-hover: #083D88;
+      --badge-green-bg: #E6F4EA;
+      --badge-green-text: #137333;
+      --badge-blue-bg: #E8F0FE;
+      --badge-blue-text: #1A73E8;
+      --font-heading: 'Newsreader', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Navigation */
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-heading);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .brand-logo span {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      background: #111;
+      color: #FFF;
+      padding: 3px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    .prof-verification {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #F4F3EF;
+      padding: 6px 14px;
+      border-radius: 30px;
+      border: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+
+    .prof-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary-accent);
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--badge-green-text);
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    /* Main Studio Container */
+    .studio-container {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      flex: 1;
+      min-height: calc(100vh - 65px);
+    }
+
+    /* Left Control Sidebar */
+    .control-panel {
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-color);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      overflow-y: auto;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .control-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .control-group {
+      margin-bottom: 16px;
+    }
+
+    .control-group:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary-accent);
+      cursor: pointer;
+    }
+
+    .toggle-switch {
+      display: flex;
+      background: #F1EFF0;
+      padding: 4px;
+      border-radius: 8px;
+      gap: 4px;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn.active {
+      background: #FFFFFF;
+      color: var(--text-main);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .theme-picker {
+      display: flex;
+      gap: 8px;
+    }
+
+    .color-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.15s ease;
+    }
+
+    .color-swatch:hover {
+      transform: scale(1.1);
+    }
+
+    .color-swatch.selected {
+      border-color: #111;
+    }
+
+    .publish-btn {
+      background: var(--primary-accent);
+      color: #FFF;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s ease;
+    }
+
+    .publish-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Right Preview Canvas */
+    .preview-canvas {
+      padding: 36px 48px;
+      overflow-y: auto;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .paper-hero {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 36px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 28px;
+    }
+
+    .journal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--badge-blue-bg);
+      color: var(--badge-blue-text);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .paper-title {
+      font-family: var(--font-heading);
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 1.25;
+      margin-bottom: 14px;
+      color: var(--text-main);
+    }
+
+    .paper-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .paper-meta strong {
+      color: var(--text-main);
+    }
+
+    .action-bar {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-secondary {
+      background: #F4F3EF;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #EBE8DF;
+    }
+
+    /* Dynamic Content Sections */
+    .section-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .insight-pill {
+      background: #FAFA8;
+      background-color: #F8F7F4;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .insight-stat {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--primary-accent);
+      margin-bottom: 4px;
+    }
+
+    .insight-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .body-copy {
+      font-size: 15px;
+      line-height: 1.65;
+      color: #333230;
+      margin-bottom: 16px;
+    }
+
+    /* Chart Container */
+    .chart-container {
+      position: relative;
+      height: 280px;
+      margin-top: 16px;
+    }
+
+    /* Q&A Assistant Widget */
+    .qa-card {
+      background: #F5F7FA;
+      border: 1px solid #DCE3EA;
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .chat-box {
+      background: #FFF;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 14px;
+      max-height: 180px;
+      overflow-y: auto;
+      margin-bottom: 12px;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .msg-user {
+      align-self: flex-end;
+      background: var(--primary-accent);
+      color: #FFF;
+      padding: 8px 14px;
+      border-radius: 12px 12px 0 12px;
+      max-width: 80%;
+    }
+
+    .msg-bot {
+      align-self: flex-start;
+      background: #F1EFF0;
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: 12px 12px 12px 0;
+      max-width: 85%;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .chat-input {
+      flex: 1;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .chat-btn {
+      background: var(--primary-accent);
+      color: #FFF;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #111;
+      color: #FFF;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      display: none;
+      box-shadow: var(--shadow-md);
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="#" class="brand-logo">
+      ScholarPage <span>Professor Studio</span>
+    </a>
+    <div class="prof-verification">
+      <div class="prof-avatar">DR</div>
+      <div>
+        <strong>Dr. Elena Rostova, PhD</strong>
+        <span class="verified-badge">✓ Verified Stanford Faculty</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Studio -->
+  <div class="studio-container">
+    
+    <!-- Control Panel -->
+    <aside class="control-panel">
+      <div class="panel-title">No-Code Page Studio</div>
+
+      <!-- Control Card 1: Information Density -->
+      <div class="control-card">
+        <label for="densitySlider">Information Density Slider</label>
+        <input type="range" id="densitySlider" min="1" max="3" value="2" step="1" onchange="updateDensity(this.value)">
+        <div class="range-labels">
+          <span>Executive Brief</span>
+          <span>Balanced</span>
+          <span>Full Academic</span>
+        </div>
+      </div>
+
+      <!-- Control Card 2: Visualization Mode -->
+      <div class="control-card">
+        <label>Visualization Mode</label>
+        <div class="toggle-switch">
+          <button class="toggle-btn active" id="btnVizInteractive" onclick="setVizMode('interactive')">Interactive Charts</button>
+          <button class="toggle-btn" id="btnVizStatic" onclick="setVizMode('static')">Static Figure</button>
+        </div>
+      </div>
+
+      <!-- Control Card 3: Target Audience Tuning -->
+      <div class="control-card">
+        <label>Target Audience Tuning</label>
+        <div class="toggle-switch" style="flex-direction: column;">
+          <button class="toggle-btn active" id="audIndustry" onclick="setAudience('industry')">Industry Practitioners</button>
+          <button class="toggle-btn" id="audStudents" onclick="setAudience('students')">Students & General Public</button>
+          <button class="toggle-btn" id="audPeers" onclick="setAudience('peers')">Peer Researchers</button>
+        </div>
+      </div>
+
+      <!-- Control Card 4: Accent Color Theme -->
+      <div class="control-card">
+        <label>Page Accent Theme</label>
+        <div class="theme-picker">
+          <div class="color-swatch selected" style="background: #0F52BA;" onclick="setTheme('#0F52BA', this)"></div>
+          <div class="color-swatch" style="background: #137333;" onclick="setTheme('#137333', this)"></div>
+          <div class="color-swatch" style="background: #D9381E;" onclick="setTheme('#D9381E', this)"></div>
+          <div class="color-swatch" style="background: #5B2C6F;" onclick="setTheme('#5B2C6F', this)"></div>
+        </div>
+      </div>
+
+      <!-- Publish Action -->
+      <button class="publish-btn" onclick="publishPage()">
+        ⚡ Publish Interactive Webpage
+      </button>
+    </aside>
+
+    <!-- Preview Canvas -->
+    <main class="preview-canvas">
+      
+      <!-- Paper Hero -->
+      <section class="paper-hero">
+        <div class="journal-badge">📄 Published in Nature Machine Intelligence (2026)</div>
+        <h1 class="paper-title">Transformer Attention Scaling in Large-Scale Industrial Sensor Diagnostics</h1>
+        <div class="paper-meta">
+          <div>Authors: <strong>Dr. Elena Rostova<sup>1</sup>, Marcus Vance<sup>2</sup>, Prof. David K. Thorne<sup>1</sup></strong></div>
+          <div>Institutions: <sup>1</sup>Stanford AI Lab, <sup>2</sup>Substrate Research</div>
+          <div>DOI: <strong>10.1038/s41586-026-08912-x</strong></div>
+        </div>
+        <div class="action-bar">
+          <button class="btn-secondary" onclick="copyCitation()">📋 Copy BibTeX / APA Citation</button>
+          <button class="btn-secondary" onclick="copyShareLink()">🔗 Share Interactive Link</button>
+          <button class="btn-secondary" onclick="downloadPDF()">📥 Download Executive Brief (PDF)</button>
+        </div>
+      </section>
+
+      <!-- Executive Insights Grid -->
+      <section class="section-card">
+        <div class="section-header">
+          <h2 class="section-title">Core Findings & Practical Impact</h2>
+          <span style="font-size: 12px; color: var(--text-muted);" id="densityIndicator">Showing: Balanced Mode</span>
+        </div>
+        
+        <div class="insights-grid">
+          <div class="insight-pill">
+            <div class="insight-stat">42%</div>
+            <div class="insight-desc">Reduction in fault diagnosis latency for heavy machinery sensors.</div>
+          </div>
+          <div class="insight-pill">
+            <div class="insight-stat">$1.4M</div>
+            <div class="insight-desc">Average annual operational cost savings per industrial equipment fleet.</div>
+          </div>
+          <div class="insight-pill">
+            <div class="insight-stat">99.4%</div>
+            <div class="insight-desc">Out-of-distribution accuracy on noisy electrical vibration signals.</div>
+          </div>
+        </div>
+
+        <p class="body-copy" id="summaryText">
+          <strong>Key Takeaway:</strong> We present a sparse attention mechanism tailored for multi-channel vibration and thermal streams. By removing redundant frequency noise prior to attention matrix projection, maintenance teams can identify gear bearing degradation up to 14 days before catastrophic failure.
+        </p>
+      </section>
+
+      <!-- Interactive Benchmark Figure -->
+      <section class="section-card">
+        <div class="section-header">
+          <h2 class="section-title">Performance Benchmarks & Comparisons</h2>
+          <span style="font-size: 12px; color: var(--text-muted);" id="vizModeLabel">Mode: Interactive Chart.js</span>
+        </div>
+
+        <div id="chartView">
+          <div class="chart-container">
+            <canvas id="benchmarkChart"></canvas>
+          </div>
+        </div>
+
+        <div id="staticView" style="display: none; text-align: center; padding: 20px;">
+          <svg width="100%" height="220" viewBox="0 0 500 200" style="background:#F9F8F6; border-radius:12px;">
+            <rect x="50" y="40" width="80" height="120" fill="#0F52BA" />
+            <rect x="180" y="80" width="80" height="80" fill="#5F6368" />
+            <rect x="310" y="110" width="80" height="50" fill="#BDC1C6" />
+            <text x="90" y="180" text-anchor="middle" font-size="12">Our Model</text>
+            <text x="220" y="180" text-anchor="middle" font-size="12">LSTM Baseline</text>
+            <text x="350" y="180" text-anchor="middle" font-size="12">Standard Transformer</text>
+            <text x="250" y="25" text-anchor="middle" font-size="14" font-weight="bold">Static Figure 3: Fault Detection Latency (ms)</text>
+          </svg>
+        </div>
+      </section>
+
+      <!-- Q&A Assistant -->
+      <section class="section-card qa-card">
+        <div class="section-header">
+          <h2 class="section-title">💬 Ask the Paper (AI Research Assistant)</h2>
+        </div>
+        <div class="chat-box" id="chatBox">
+          <div class="msg-bot">Hi! I am the interactive AI representative for Dr. Rostova's paper. Ask me anything about our methodology, datasets, or deployment requirements!</div>
+        </div>
+        <div class="input-row">
+          <input type="text" id="chatInput" class="chat-input" placeholder="e.g. What were the hardware specs used during training?" onkeypress="handleKey(event)">
+          <button class="chat-btn" onclick="sendMsg()">Ask</button>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <div class="toast" id="toast">Link copied to clipboard!</div>
+
+  <script>
+    // Initialize Chart.js
+    const ctx = document.getElementById('benchmarkChart').getContext('2d');
+    let benchmarkChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['ScholarPage Model (Ours)', 'LSTM Baseline', 'Standard Transformer', 'CNN-1D Model'],
+        datasets: [{
+          label: 'Diagnosis Latency (ms - lower is better)',
+          data: [14.2, 38.6, 45.1, 62.4],
+          backgroundColor: ['#0F52BA', '#808080', '#A0A0A0', '#CCCCCC'],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'top' }
+        },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: 'Milliseconds (ms)' } }
+        }
+      }
+    });
+
+    // Control Handlers
+    function updateDensity(val) {
+      const summaryText = document.getElementById('summaryText');
+      const indicator = document.getElementById('densityIndicator');
+      
+      if (val == 1) {
+        indicator.innerText = "Showing: Executive Brief Mode";
+        summaryText.innerHTML = "<strong>Executive Brief:</strong> This research introduces a 42% faster sensor fault detection algorithm designed for industrial equipment fleets. It enables predictive maintenance teams to stop machine breakdowns 14 days before failure, saving up to $1.4M per fleet annually.";
+      } else if (val == 2) {
+        indicator.innerText = "Showing: Balanced Mode";
+        summaryText.innerHTML = "<strong>Key Takeaway:</strong> We present a sparse attention mechanism tailored for multi-channel vibration and thermal streams. By removing redundant frequency noise prior to attention matrix projection, maintenance teams can identify gear bearing degradation up to 14 days before catastrophic failure.";
+      } else {
+        indicator.innerText = "Showing: Full Academic Mode";
+        summaryText.innerHTML = "<strong>Full Mathematical Formulation:</strong> Given an input tensor X &in; ℝ<sup>C &times; T</sup> across C channels and T time steps, our sparse attention matrix S = Softmax(Q K<sup>T</sup> / &radic;d + M_freq) zeroes out non-stationary harmonics using a learned spectral mask M_freq derived from empirical Fourier bounds.";
+      }
+    }
+
+    function setVizMode(mode) {
+      document.getElementById('btnVizInteractive').classList.toggle('active', mode === 'interactive');
+      document.getElementById('btnVizStatic').classList.toggle('active', mode === 'static');
+      
+      document.getElementById('chartView').style.display = mode === 'interactive' ? 'block' : 'none';
+      document.getElementById('staticView').style.display = mode === 'static' ? 'block' : 'none';
+      document.getElementById('vizModeLabel').innerText = mode === 'interactive' ? 'Mode: Interactive Chart.js' : 'Mode: Static SVG Vector';
+    }
+
+    function setAudience(aud) {
+      document.getElementById('audIndustry').classList.toggle('active', aud === 'industry');
+      document.getElementById('audStudents').classList.toggle('active', aud === 'students');
+      document.getElementById('audPeers').classList.toggle('active', aud === 'peers');
+      showToast(`Tuned presentation for: ${aud.toUpperCase()}`);
+    }
+
+    function setTheme(color, el) {
+      document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+      el.classList.add('selected');
+      document.documentElement.style.setProperty('--primary-accent', color);
+      benchmarkChart.data.datasets[0].backgroundColor[0] = color;
+      benchmarkChart.update();
+      showToast("Theme updated!");
+    }
+
+    function copyCitation() {
+      navigator.clipboard.writeText(`Rostova, E., Vance, M., & Thorne, D. K. (2026). Transformer Attention Scaling in Large-Scale Industrial Sensor Diagnostics. Nature Machine Intelligence, 8(4), 112-124. DOI: 10.1038/s41586-026-08912-x`);
+      showToast("Citation copied to clipboard!");
+    }
+
+    function copyShareLink() {
+      navigator.clipboard.writeText(window.location.href);
+      showToast("Interactive page URL copied to clipboard!");
+    }
+
+    function downloadPDF() {
+      showToast("Generating Executive Summary PDF...");
+    }
+
+    function publishPage() {
+      showToast("🚀 Interactive paper page published live!");
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2800);
+    }
+
+    // Chat Handler
+    function handleKey(e) {
+      if (e.key === 'Enter') sendMsg();
+    }
+
+    function sendMsg() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chatBox = document.getElementById('chatBox');
+      
+      // Append user msg
+      const userDiv = document.createElement('div');
+      userDiv.className = 'msg-user';
+      userDiv.innerText = text;
+      chatBox.appendChild(userDiv);
+      input.value = '';
+
+      // Simulate bot answer
+      setTimeout(() => {
+        const botDiv = document.createElement('div');
+        botDiv.className = 'msg-bot';
+        if (text.toLowerCase().includes('hardware') || text.toLowerCase().includes('gpu')) {
+          botDiv.innerText = "Training was conducted on 4x NVIDIA H100 GPUs using PyTorch 2.4 with AMP float16 precision over 48 hours.";
+        } else if (text.toLowerCase().includes('cost') || text.toLowerCase().includes('saving')) {
+          botDiv.innerText = "In our field trials across 3 industrial manufacturing sites, early fault prediction saved an estimated $1.4M per fleet per year in unscheduled downtime.";
+        } else {
+          botDiv.innerText = `Based on Section 3 of Dr. Rostova's paper, our model achieves 99.4% accuracy by combining spectral temporal attention with sparse Fourier projection.`;
+        }
+        chatBox.appendChild(botDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 600);
+    }
+  </script>
+</body>
+</html>
