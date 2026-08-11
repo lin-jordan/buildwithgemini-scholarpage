@@ -726,9 +726,14 @@
       <label class="input-label" for="paperUrlInput">Paste academic paper URL</label>
       <input type="text" id="paperUrlInput" class="url-input-large" placeholder="https://arxiv.org/abs/1706.03762" value="https://arxiv.org/abs/1706.03762">
       
-      <button class="btn-generate" onclick="generateScholarPage()">
-        ⚡ Generate ScholarPage
-      </button>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="btn-generate" style="flex: 1;" onclick="generateScholarPage()">
+          ⚡ Generate ScholarPage
+        </button>
+        <button class="btn-secondary" style="padding: 14px 20px; font-size: 14px; font-weight: 700; border-radius: 10px;" onclick="setPresetUrl('https://arxiv.org/abs/1706.03762')">
+          ✨ Explore Sample Instantly
+        </button>
+      </div>
 
       <div class="helper-text">
         Works best with publicly accessible papers from sources such as arXiv and other open-access repositories.
@@ -1018,6 +1023,7 @@
 
     function setPresetUrl(url) {
       document.getElementById('paperUrlInput').value = url;
+      generateScholarPage();
     }
 
     function resetToLanding() {
