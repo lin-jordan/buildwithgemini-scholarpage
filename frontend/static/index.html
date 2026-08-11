@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ScholarPage — Professor Paper Interactive Site Creator</title>
+  <title>ScholarPage — Turn Academic Papers into Interactive Webpages</title>
   <!-- Google Fonts & Chart.js -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -81,48 +81,192 @@
       text-transform: uppercase;
     }
 
-    .prof-verification {
+    .header-actions {
       display: flex;
       align-items: center;
       gap: 12px;
-      background: #F4F3EF;
-      padding: 6px 14px;
-      border-radius: 30px;
-      border: 1px solid var(--border-color);
-      font-size: 13px;
     }
 
-    .prof-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
+    .btn-new-paper {
+      background: #111;
+      color: #FFF;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease;
+    }
+
+    .btn-new-paper:hover {
+      background: #333;
+    }
+
+    /* 1. Landing View / Entry Screen */
+    .landing-hero {
+      max-width: 760px;
+      margin: 60px auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+
+    .landing-headline {
+      font-family: var(--font-heading);
+      font-size: 42px;
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .landing-subtitle {
+      font-size: 17px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 32px;
+    }
+
+    .input-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: var(--shadow-md);
+      text-align: left;
+    }
+
+    .input-label {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .url-input-large {
+      width: 100%;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 14px;
+      transition: border-color 0.2s ease;
+    }
+
+    .url-input-large:focus {
+      border-color: var(--primary-accent);
+    }
+
+    .btn-generate {
       background: var(--primary-accent);
       color: #FFF;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 24px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 12px;
+      gap: 8px;
+      transition: background 0.2s ease;
     }
 
-    .verified-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+    .btn-generate:hover {
+      background: var(--accent-hover);
+    }
+
+    .helper-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 14px;
+      text-align: center;
+    }
+
+    .preset-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+      justify-content: center;
+    }
+
+    .chip {
+      background: #F4F3EF;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .chip:hover {
+      background: var(--primary-accent);
+      color: #FFF;
+      border-color: var(--primary-accent);
+    }
+
+    /* 2. Processing Screen */
+    .processing-overlay {
+      display: none;
+      max-width: 520px;
+      margin: 80px auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
+
+    .processing-title {
+      font-family: var(--font-heading);
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .step-list {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    .step-item.done {
       color: var(--badge-green-text);
       font-weight: 600;
-      font-size: 12px;
     }
 
-    /* Main Studio Container */
+    .step-item.active {
+      color: var(--primary-accent);
+      font-weight: 700;
+    }
+
+    /* 3. Studio Workspace Layout */
     .studio-container {
-      display: grid;
-      grid-template-columns: 380px 1fr;
+      display: none; /* Shown after generation */
+      grid-template-columns: 320px 1fr;
       flex: 1;
       min-height: calc(100vh - 65px);
     }
 
-    /* Left Control Sidebar */
+    .studio-container.full-preview {
+      grid-template-columns: 1fr;
+    }
+
+    /* Customize Sidebar */
     .control-panel {
       background: var(--bg-sidebar);
       border-right: 1px solid var(--border-color);
@@ -131,6 +275,10 @@
       flex-direction: column;
       gap: 20px;
       overflow-y: auto;
+    }
+
+    .control-panel.hidden {
+      display: none;
     }
 
     .panel-title {
@@ -146,7 +294,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 12px;
-      padding: 18px;
+      padding: 16px;
       box-shadow: var(--shadow-sm);
     }
 
@@ -154,61 +302,11 @@
       display: block;
       font-size: 13px;
       font-weight: 600;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       color: var(--text-main);
     }
 
-    .url-input {
-      width: 100%;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 13px;
-      outline: none;
-      margin-bottom: 10px;
-    }
-
-    .preset-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-
-    .chip {
-      background: #F4F3EF;
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 4px 10px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .chip:hover {
-      background: var(--primary-accent);
-      color: #FFF;
-      border-color: var(--primary-accent);
-    }
-
-    .range-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 6px;
-      font-weight: 500;
-    }
-
-    input[type="range"] {
-      width: 100%;
-      accent-color: var(--primary-accent);
-      cursor: pointer;
-    }
-
-    .toggle-switch {
+    .option-group {
       display: flex;
       background: #F1EFF0;
       padding: 4px;
@@ -216,20 +314,21 @@
       gap: 4px;
     }
 
-    .toggle-btn {
+    .option-btn {
       flex: 1;
-      padding: 8px;
+      padding: 8px 6px;
       border: none;
       background: transparent;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--text-muted);
       cursor: pointer;
       transition: all 0.2s ease;
+      text-align: center;
     }
 
-    .toggle-btn.active {
+    .option-btn.active {
       background: #FFFFFF;
       color: var(--text-main);
       box-shadow: 0 1px 4px rgba(0,0,0,0.1);
@@ -257,56 +356,30 @@
       border-color: #111;
     }
 
-    .publish-btn {
-      background: var(--primary-accent);
-      color: #FFF;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 18px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: background 0.2s ease;
-    }
-
-    .publish-btn:hover {
-      background: var(--accent-hover);
-    }
-
-    /* Right Preview Canvas */
+    /* Main Preview Canvas */
     .preview-canvas {
       padding: 36px 48px;
       overflow-y: auto;
-      max-width: 900px;
+      max-width: 860px;
       margin: 0 auto;
       width: 100%;
     }
 
-    .paper-hero {
+    .section-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 16px;
-      padding: 36px;
+      padding: 28px;
+      margin-bottom: 24px;
       box-shadow: var(--shadow-sm);
-      margin-bottom: 28px;
     }
 
-    .journal-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--badge-blue-bg);
-      color: var(--badge-blue-text);
-      font-size: 12px;
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 22px;
       font-weight: 600;
-      padding: 4px 12px;
-      border-radius: 20px;
-      margin-bottom: 16px;
+      color: var(--text-main);
+      margin-bottom: 14px;
     }
 
     .paper-title {
@@ -315,14 +388,13 @@
       font-weight: 600;
       line-height: 1.25;
       margin-bottom: 14px;
-      color: var(--text-main);
     }
 
     .paper-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 16px;
-      font-size: 14px;
+      gap: 14px;
+      font-size: 13px;
       color: var(--text-muted);
       margin-bottom: 20px;
     }
@@ -333,94 +405,224 @@
 
     .action-bar {
       display: flex;
-      gap: 12px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .btn-secondary {
       background: #F4F3EF;
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: 8px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.15s ease;
+      text-decoration: none;
+      transition: background 0.15s ease;
     }
 
     .btn-secondary:hover {
       background: #EBE8DF;
     }
 
-    /* Dynamic Content Sections */
-    .section-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 28px;
-      margin-bottom: 24px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-    }
-
-    .section-title {
+    /* In One Sentence Highlight Box */
+    .one-sentence-box {
+      background: var(--badge-blue-bg);
+      border-left: 4px solid var(--primary-accent);
+      border-radius: 0 12px 12px 0;
+      padding: 18px 22px;
+      font-size: 17px;
+      line-height: 1.5;
+      color: #0A3663;
       font-family: var(--font-heading);
-      font-size: 22px;
       font-weight: 600;
-      color: var(--text-main);
+      margin-bottom: 24px;
     }
 
-    .insights-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-
-    .insight-pill {
-      background-color: #F8F7F4;
+    /* Question Callout Card */
+    .question-card {
+      background: #FAF8F5;
       border: 1px solid var(--border-color);
       border-radius: 12px;
-      padding: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
     }
 
-    .insight-stat {
-      font-size: 26px;
+    .question-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .question-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.45;
+    }
+
+    /* Key Findings Cards */
+    .findings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .finding-card {
+      background: #F8F7F4;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .finding-stat {
+      font-size: 28px;
       font-weight: 800;
       color: var(--primary-accent);
       margin-bottom: 4px;
     }
 
-    .insight-desc {
+    .finding-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 10px;
+    }
+
+    .finding-meaning {
       font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 10px;
+    }
+
+    .finding-source {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary-accent);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    /* Figure Section */
+    .figure-box {
+      background: #FAF9F6;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 14px;
+    }
+
+    .figure-header {
+      margin-bottom: 14px;
+    }
+
+    .figure-sub-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .figure-sub-text {
+      font-size: 14px;
+      color: var(--text-main);
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 260px;
+      margin-top: 12px;
+    }
+
+    /* Methodology Steps */
+    .method-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .step-card {
+      background: #F8F7F4;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .step-num {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary-accent);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .step-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .step-desc {
+      font-size: 12px;
       color: var(--text-muted);
       line-height: 1.4;
     }
 
-    .body-copy {
-      font-size: 15px;
-      line-height: 1.65;
-      color: #333230;
-      margin-bottom: 16px;
+    /* Accordion / Expandable */
+    .accordion-btn {
+      background: transparent;
+      border: none;
+      color: var(--primary-accent);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 6px 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    /* Chart Container */
-    .chart-container {
-      position: relative;
-      height: 280px;
-      margin-top: 16px;
+    .accordion-content {
+      display: none;
+      background: #F5F4F0;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--text-main);
+      margin-top: 10px;
     }
 
-    /* Q&A Assistant Widget */
+    /* Limitations Box */
+    .limitations-box {
+      background: #FFF8E1;
+      border: 1px solid #FFE082;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .limitations-box ul {
+      margin-left: 20px;
+      font-size: 14px;
+      color: #5D4037;
+      line-height: 1.6;
+    }
+
+    /* Chat Widget */
     .qa-card {
       background: #F5F7FA;
       border: 1px solid #DCE3EA;
@@ -436,7 +638,7 @@
       max-height: 180px;
       overflow-y: auto;
       margin-bottom: 12px;
-      font-size: 14px;
+      font-size: 13px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -470,7 +672,7 @@
       border: 1px solid var(--border-color);
       border-radius: 8px;
       padding: 10px 14px;
-      font-size: 14px;
+      font-size: 13px;
       outline: none;
     }
 
@@ -503,78 +705,97 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Top Header -->
   <header>
-    <a href="#" class="brand-logo">
-      ScholarPage <span>Professor Studio</span>
+    <a href="#" class="brand-logo" onclick="resetToLanding()">
+      ScholarPage <span>STUDIO</span>
     </a>
-    <div class="prof-verification">
-      <div class="prof-avatar">DR</div>
-      <div>
-        <strong>Dr. Elena Rostova, PhD</strong>
-        <span class="verified-badge">✓ Verified Stanford Faculty</span>
-      </div>
+    <div class="header-actions">
+      <button class="btn-new-paper" onclick="resetToLanding()">+ New Paper</button>
     </div>
   </header>
 
-  <!-- Main Studio -->
-  <div class="studio-container">
+  <!-- 1. MVP Entry Screen -->
+  <section class="landing-hero" id="landingScreen">
+    <h1 class="landing-headline">Turn an academic paper into an interactive webpage</h1>
+    <p class="landing-subtitle">
+      Paste a public research paper and ScholarPage will extract the findings, explain the research, and create an easier way to explore it.
+    </p>
+
+    <div class="input-card">
+      <label class="input-label" for="paperUrlInput">Paste academic paper URL</label>
+      <input type="text" id="paperUrlInput" class="url-input-large" placeholder="https://arxiv.org/abs/1706.03762" value="https://arxiv.org/abs/1706.03762">
+      
+      <button class="btn-generate" onclick="generateScholarPage()">
+        ⚡ Generate ScholarPage
+      </button>
+
+      <div class="helper-text">
+        Works best with publicly accessible papers from sources such as arXiv and other open-access repositories.
+      </div>
+
+      <div class="preset-chips">
+        <div class="chip" onclick="setPresetUrl('https://arxiv.org/abs/1706.03762')">Attention Is All You Need</div>
+        <div class="chip" onclick="setPresetUrl('https://arxiv.org/abs/2005.14165')">GPT-3 Few-Shot Learning</div>
+        <div class="chip" onclick="setPresetUrl('https://arxiv.org/abs/2112.10752')">Latent Diffusion Models</div>
+        <div class="chip" onclick="setPresetUrl('https://arxiv.org/abs/1512.03385')">ResNet Deep Residuals</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Processing Screen -->
+  <section class="processing-overlay" id="processingScreen">
+    <h2 class="processing-title">Creating your ScholarPage</h2>
+    <div class="step-list">
+      <div class="step-item done" id="step1">✓ Finding the paper</div>
+      <div class="step-item active" id="step2">→ Reading the research</div>
+      <div class="step-item" id="step3">○ Identifying key findings</div>
+      <div class="step-item" id="step4">○ Extracting figures</div>
+      <div class="step-item" id="step5">○ Simplifying technical concepts</div>
+      <div class="step-item" id="step6">○ Building interactive page</div>
+    </div>
+  </section>
+
+  <!-- 3. ScholarPage Studio Workspace -->
+  <div class="studio-container" id="studioWorkspace">
     
-    <!-- Control Panel -->
-    <aside class="control-panel">
-      <div class="panel-title">No-Code Page Studio</div>
+    <!-- Left Customize Control Panel -->
+    <aside class="control-panel" id="controlSidebar">
+      <div class="panel-title">Customize</div>
 
-      <!-- Import Paper Link Card -->
-      <div class="control-card" style="border: 2px solid var(--primary-accent);">
-        <label for="paperUrlInput">🔗 Import Any Academic Paper Link</label>
-        <input type="text" id="paperUrlInput" class="url-input" placeholder="Paste ArXiv, DOI, or PDF URL..." value="https://arxiv.org/abs/1706.03762">
-        
-        <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">Try famous landmark papers:</div>
-        <div class="preset-chips">
-          <div class="chip" onclick="setPresetUrl('https://arxiv.org/abs/1706.03762')">Attention Is All You Need</div>
-          <div class="chip" onclick="setPresetUrl('https://arxiv.org/abs/2005.14165')">GPT-3 Few-Shot</div>
-          <div class="chip" onclick="setPresetUrl('https://arxiv.org/abs/2112.10752')">Latent Diffusion</div>
-          <div class="chip" onclick="setPresetUrl('https://arxiv.org/abs/1512.03385')">ResNet</div>
-        </div>
-
-        <button class="publish-btn" style="background: #111;" onclick="convertPaperUrl()">
-          ⚡ Convert Link to Interactive Site
-        </button>
-      </div>
-
-      <!-- Control Card 1: Information Density -->
+      <!-- Control 1: Detail Level -->
       <div class="control-card">
-        <label for="densitySlider">Information Density Slider</label>
-        <input type="range" id="densitySlider" min="1" max="3" value="2" step="1" onchange="updateDensity(this.value)">
-        <div class="range-labels">
-          <span>Executive Brief</span>
-          <span>Balanced</span>
-          <span>Full Academic</span>
+        <label>Detail Level</label>
+        <div class="option-group">
+          <button class="option-btn" id="dlQuick" onclick="setDetailLevel('quick')">Quick Read</button>
+          <button class="option-btn active" id="dlBalanced" onclick="setDetailLevel('balanced')">Balanced</button>
+          <button class="option-btn" id="dlDeep" onclick="setDetailLevel('deep')">Deep Dive</button>
         </div>
       </div>
 
-      <!-- Control Card 2: Visualization Mode -->
+      <!-- Control 2: Explain For (Audience) -->
       <div class="control-card">
-        <label>Visualization Mode</label>
-        <div class="toggle-switch">
-          <button class="toggle-btn active" id="btnVizInteractive" onclick="setVizMode('interactive')">Interactive Charts</button>
-          <button class="toggle-btn" id="btnVizStatic" onclick="setVizMode('static')">Static Figure</button>
+        <label>Explain For</label>
+        <div class="option-group" style="flex-direction: column;">
+          <button class="option-btn" id="audGeneral" onclick="setAudience('general')">General Reader</button>
+          <button class="option-btn active" id="audIndustry" onclick="setAudience('industry')">Industry / Practitioner</button>
+          <button class="option-btn" id="audResearcher" onclick="setAudience('researcher')">Researcher</button>
         </div>
       </div>
 
-      <!-- Control Card 3: Target Audience Tuning -->
+      <!-- Control 3: Figures -->
       <div class="control-card">
-        <label>Target Audience Tuning</label>
-        <div class="toggle-switch" style="flex-direction: column;">
-          <button class="toggle-btn active" id="audIndustry" onclick="setAudience('industry')">Industry Practitioners</button>
-          <button class="toggle-btn" id="audStudents" onclick="setAudience('students')">Students & General Public</button>
-          <button class="toggle-btn" id="audPeers" onclick="setAudience('peers')">Peer Researchers</button>
+        <label>Figures</label>
+        <div class="option-group">
+          <button class="option-btn" id="figOriginal" onclick="setFigureMode('original')">Original</button>
+          <button class="option-btn" id="figEnhanced" onclick="setFigureMode('enhanced')">Enhanced</button>
+          <button class="option-btn active" id="figInteractive" onclick="setFigureMode('interactive')">Interactive</button>
         </div>
       </div>
 
-      <!-- Control Card 4: Accent Color Theme -->
+      <!-- Control 4: Accent Color Theme -->
       <div class="control-card">
-        <label>Page Accent Theme</label>
+        <label>Accent Color</label>
         <div class="theme-picker">
           <div class="color-swatch selected" style="background: #0F52BA;" onclick="setTheme('#0F52BA', this)"></div>
           <div class="color-swatch" style="background: #137333;" onclick="setTheme('#137333', this)"></div>
@@ -583,94 +804,179 @@
         </div>
       </div>
 
-      <!-- Publish Action -->
-      <button class="publish-btn" onclick="publishPage()">
-        ⚡ Publish Interactive Webpage
+      <!-- Bottom Actions -->
+      <button class="btn-generate" onclick="togglePreviewMode()" id="btnTogglePreview">
+        👁️ Preview Page (Hide Controls)
+      </button>
+
+      <button class="btn-secondary" style="width: 100%; justify-content: center;" onclick="copyShareLink()">
+        🔗 Copy Share Link
       </button>
     </aside>
 
-    <!-- Preview Canvas -->
+    <!-- Right Live Preview Canvas -->
     <main class="preview-canvas">
       
-      <!-- Paper Hero -->
-      <section class="paper-hero">
-        <div class="journal-badge" id="journalBadge">📄 Published in ArXiv / Peer-Reviewed (2026)</div>
-        <h1 class="paper-title" id="paperTitle">Attention Is All You Need</h1>
+      <!-- Paper Metadata Header -->
+      <section class="section-card">
+        <h1 class="paper-title" id="paperTitle">Transformer Attention Scaling in Industrial Sensor Diagnostics</h1>
         <div class="paper-meta">
-          <div>Authors: <strong id="paperAuthors">Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit et al.</strong></div>
-          <div>Institutions: <strong id="paperInst">Google Brain / Google Research</strong></div>
-          <div>DOI / ID: <strong id="paperDoi">10.48550/arXiv.1706.03762</strong></div>
+          <div>Authors: <strong id="paperAuthors">Dr. Elena Rostova, Marcus Vance, Prof. David K. Thorne</strong></div>
+          <div>Journal / Venue: <strong id="paperJournal">Nature Machine Intelligence (2026)</strong></div>
+          <div>DOI: <strong id="paperDoi">10.1038/s41586-026-08912-x</strong></div>
         </div>
         <div class="action-bar">
-          <button class="btn-secondary" onclick="copyCitation()">📋 Copy BibTeX / APA Citation</button>
-          <button class="btn-secondary" onclick="copyShareLink()">🔗 Share Interactive Link</button>
-          <button class="btn-secondary" onclick="downloadPDF()">📥 Download Executive Brief (PDF)</button>
+          <a href="#" target="_blank" class="btn-secondary" id="origPaperLink">📄 Open Original Source Paper</a>
+          <button class="btn-secondary" onclick="copyCitation()">📋 Copy Citation</button>
+          <button class="btn-secondary" onclick="copyShareLink()">🔗 Copy Share Link</button>
         </div>
       </section>
 
-      <!-- Executive Insights Grid -->
-      <section class="section-card">
-        <div class="section-header">
-          <h2 class="section-title">Core Findings & Practical Impact</h2>
-          <span style="font-size: 12px; color: var(--text-muted);" id="densityIndicator">Showing: Balanced Mode</span>
-        </div>
-        
-        <div class="insights-grid" id="insightsGrid">
-          <div class="insight-pill">
-            <div class="insight-stat" id="stat1">3.8x</div>
-            <div class="insight-desc" id="desc1">Faster training speed compared to recurrent sequence models.</div>
-          </div>
-          <div class="insight-pill">
-            <div class="insight-stat" id="stat2">28.4 BLEU</div>
-            <div class="insight-desc" id="desc2">New state-of-the-art translation quality score on WMT 2014.</div>
-          </div>
-          <div class="insight-pill">
-            <div class="insight-stat" id="stat3">O(1)</div>
-            <div class="insight-desc" id="desc3">Sequential operations count, enabling full GPU parallelization.</div>
-          </div>
-        </div>
+      <!-- Research in One Sentence -->
+      <div class="one-sentence-box" id="oneSentenceBox">
+        Research in One Sentence: A sparse attention model cuts equipment diagnostic latency by 42% on noisy sensor streams.
+      </div>
 
-        <p class="body-copy" id="summaryText">
-          <strong>Key Takeaway:</strong> We propose the Transformer, a novel network architecture based entirely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on translation tasks show superior quality while being significantly more parallelizable and requiring significantly less time to train.
+      <!-- Research Question Callout -->
+      <section class="question-card">
+        <div class="question-title">What question were the researchers trying to answer?</div>
+        <div class="question-text" id="questionText">
+          Can transformer-based attention models identify industrial equipment failures faster while remaining accurate when sensor signals become noisy?
+        </div>
+      </section>
+
+      <!-- Key Findings Cards -->
+      <section class="section-card">
+        <h2 class="section-title">Key Findings</h2>
+        <div class="findings-grid" id="findingsGrid">
+          <div class="finding-card">
+            <div class="finding-stat">42%</div>
+            <div class="finding-label">Latency Reduction</div>
+            <div class="finding-meaning">What this means: Identifies machinery failures significantly faster than traditional baseline architectures.</div>
+            <div class="finding-source" onclick="showSourceTrace('Page 7, Section 4.2')">View source (Page 7)</div>
+          </div>
+          <div class="finding-card">
+            <div class="finding-stat">99.4%</div>
+            <div class="finding-label">Robustness Score</div>
+            <div class="finding-meaning">What this means: Maintains high accuracy even when severe signal noise is introduced.</div>
+            <div class="finding-source" onclick="showSourceTrace('Page 9, Table 3')">View source (Page 9)</div>
+          </div>
+          <div class="finding-card">
+            <div class="finding-stat">3.8x</div>
+            <div class="finding-label">Compute Efficiency</div>
+            <div class="finding-meaning">What this means: Requires substantially less GPU memory and training time.</div>
+            <div class="finding-source" onclick="showSourceTrace('Page 11, Figure 5')">View source (Page 11)</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why This Matters / Implications -->
+      <section class="section-card">
+        <h2 class="section-title">Why This Matters</h2>
+        <p class="body-copy" id="whyItMattersText" style="font-size: 15px; line-height: 1.6; color: var(--text-main);">
+          Enables predictive maintenance teams to stop breakdowns 14 days early, reducing unscheduled downtime across industrial fleets.
         </p>
       </section>
 
-      <!-- Interactive Benchmark Figure -->
+      <!-- Main Evidence / Figures -->
       <section class="section-card">
-        <div class="section-header">
-          <h2 class="section-title">Performance Benchmarks & Comparisons</h2>
-          <span style="font-size: 12px; color: var(--text-muted);" id="vizModeLabel">Mode: Interactive Chart.js</span>
-        </div>
-
-        <div id="chartView">
-          <div class="chart-container">
-            <canvas id="benchmarkChart"></canvas>
+        <h2 class="section-title">Main Evidence</h2>
+        
+        <div class="figure-box">
+          <div class="figure-header">
+            <div class="figure-sub-label">What you're seeing</div>
+            <div class="figure-sub-text" id="figWhatSeeing">Accuracy and detection latency of four diagnostic models as progressively more noise is introduced into sensor readings.</div>
+            
+            <div class="figure-sub-label">Key takeaway</div>
+            <div class="figure-sub-text" id="figKeyTakeaway" style="font-weight: 600; color: var(--primary-accent);">The proposed transformer model loses substantially less accuracy than baseline architectures under high noise.</div>
           </div>
-        </div>
 
-        <div id="staticView" style="display: none; text-align: center; padding: 20px;">
-          <svg width="100%" height="220" viewBox="0 0 500 200" style="background:#F9F8F6; border-radius:12px;">
-            <rect x="50" y="40" width="80" height="120" fill="#0F52BA" />
-            <rect x="180" y="80" width="80" height="80" fill="#5F6368" />
-            <rect x="310" y="110" width="80" height="50" fill="#BDC1C6" />
-            <text x="90" y="180" text-anchor="middle" font-size="12">Transformer (Ours)</text>
-            <text x="220" y="180" text-anchor="middle" font-size="12">ConvS2S</text>
-            <text x="350" y="180" text-anchor="middle" font-size="12">GNMT Baseline</text>
-            <text x="250" y="25" text-anchor="middle" font-size="14" font-weight="bold">Static Figure 1: Translation Benchmark BLEU Score</text>
-          </svg>
+          <div id="chartView">
+            <div class="chart-container">
+              <canvas id="benchmarkChart"></canvas>
+            </div>
+          </div>
+
+          <div id="staticView" style="display: none; text-align: center; padding: 20px;">
+            <svg width="100%" height="200" viewBox="0 0 500 180" style="background:#F9F8F6; border-radius:12px;">
+              <rect x="50" y="30" width="80" height="120" fill="#0F52BA" />
+              <rect x="180" y="70" width="80" height="80" fill="#5F6368" />
+              <rect x="310" y="100" width="80" height="50" fill="#BDC1C6" />
+              <text x="90" y="170" text-anchor="middle" font-size="12">Proposed Model</text>
+              <text x="220" y="170" text-anchor="middle" font-size="12">LSTM Baseline</text>
+              <text x="350" y="170" text-anchor="middle" font-size="12">CNN-1D</text>
+              <text x="250" y="20" text-anchor="middle" font-size="13" font-weight="bold">Figure 1: Original Benchmark Latency (ms)</text>
+            </svg>
+          </div>
         </div>
       </section>
 
-      <!-- Q&A Assistant -->
-      <section class="section-card qa-card">
-        <div class="section-header">
-          <h2 class="section-title">💬 Ask the Paper (AI Research Assistant)</h2>
+      <!-- How the Study Worked (Methodology Translation) -->
+      <section class="section-card" id="methodologySection">
+        <h2 class="section-title">How the Study Worked</h2>
+        
+        <div class="method-steps">
+          <div class="step-card">
+            <div class="step-num">Step 1</div>
+            <div class="step-title">Collect Data</div>
+            <div class="step-desc">Gathered vibration and thermal readings from industrial equipment.</div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">Step 2</div>
+            <div class="step-title">Train Models</div>
+            <div class="step-desc">Trained neural network architectures to identify failure patterns.</div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">Step 3</div>
+            <div class="step-title">Inject Noise</div>
+            <div class="step-desc">Deliberately degraded signals to simulate harsh real operating conditions.</div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">Step 4</div>
+            <div class="step-title">Compare</div>
+            <div class="step-desc">Evaluated accuracy, detection speed, and compute memory usage.</div>
+          </div>
         </div>
+
+        <button class="accordion-btn" onclick="toggleTechnicalMethodology()">
+          ▶ View technical methodology
+        </button>
+        <div class="accordion-content" id="techMethodContent">
+          Given an input tensor X in ℝ<sup>C x T</sup> across C channels and T time steps, our sparse attention matrix S = Softmax(Q K<sup>T</sup> / √d + M_freq) zeroes out non-stationary harmonics using a learned spectral mask M_freq derived from empirical Fourier bounds.
+        </div>
+      </section>
+
+      <!-- What Should You Keep in Mind? (Limitations) -->
+      <section class="section-card">
+        <h2 class="section-title">What Should You Keep in Mind? (Limitations)</h2>
+        <div class="limitations-box">
+          <ul id="limitationsList">
+            <li>The study tested a specific set of industrial machinery equipment datasets.</li>
+            <li>Noise conditions were artificially generated using Gaussian vibration spectrums.</li>
+            <li>Economic cost savings are projected estimates rather than long-term field observations.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Deep Dive / Technical Details -->
+      <section class="section-card" id="deepDiveSection">
+        <h2 class="section-title">Technical Deep Dive</h2>
+        <button class="accordion-btn" onclick="toggleDeepDive()">
+          ▶ View mathematical formulations & statistics
+        </button>
+        <div class="accordion-content" id="deepDiveContent">
+          Mathematical derivations establish O(N log N) time complexity compared to quadratic full-attention baseline models. Empirical convergence bounds show zero loss in gradient stability under stochastic Fourier projections.
+        </div>
+      </section>
+
+      <!-- Ask the Paper Assistant -->
+      <section class="section-card qa-card">
+        <h2 class="section-title">💬 Ask the Paper (AI Research Assistant)</h2>
         <div class="chat-box" id="chatBox">
-          <div class="msg-bot" id="botIntro">Hi! I am the interactive AI representative for this paper. Ask me anything about methodology, training compute, or real-world application!</div>
+          <div class="msg-bot" id="botIntro">Hi! I am the interactive AI representative for this paper. Ask me anything about the methodology, dataset, or practical findings!</div>
         </div>
         <div class="input-row">
-          <input type="text" id="chatInput" class="chat-input" placeholder="e.g. What makes multi-head attention superior to recurrent networks?" onkeypress="handleKey(event)">
+          <input type="text" id="chatInput" class="chat-input" placeholder="e.g. How does this model handle noisy signals?" onkeypress="handleKey(event)">
           <button class="chat-btn" onclick="sendMsg()">Ask</button>
         </div>
       </section>
@@ -682,30 +988,22 @@
   <div class="toast" id="toast">Link copied to clipboard!</div>
 
   <script>
-    // Current active paper model
-    let activePaper = {
-      title: "Attention Is All You Need",
-      authors: "Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit et al.",
-      inst: "Google Brain / Google Research",
-      journal: "ArXiv / Peer-Reviewed (2017)",
-      doi: "10.48550/arXiv.1706.03762",
-      density_brief: "Executive Brief: This landmark paper replaces recurrent neural networks with self-attention mechanisms, accelerating training speeds by 3.8x and setting new benchmarks in natural language processing.",
-      density_balanced: "Key Takeaway: We propose the Transformer, a novel network architecture based entirely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on translation tasks show superior quality while being significantly more parallelizable and requiring significantly less time to train.",
-      density_academic: "Full Mathematical Formulation: Attention(Q, K, V) = Softmax(Q K^T / sqrt(d_k)) V. Multi-head attention allows the model to jointly attend to information from different representation subspaces at different positions.",
-      qa: [
-        { q: "Why is multi-head attention better than RNNs?", a: "Self-attention allows O(1) sequential operations, enabling complete parallelization on GPUs without waiting for previous hidden states." }
-      ]
-    };
+    // State Store
+    let currentPaper = null;
+    let currentAudience = 'industry';
+    let currentDetailLevel = 'balanced';
+    let currentFigureMode = 'interactive';
+    let isFullPreview = false;
 
     // Initialize Chart.js
     const ctx = document.getElementById('benchmarkChart').getContext('2d');
     let benchmarkChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Transformer (Big)', 'Transformer (Base)', 'ConvS2S', 'GNMT + RL'],
+        labels: ['Proposed Model', 'LSTM Baseline', 'Standard Transformer', 'CNN-1D'],
         datasets: [{
-          label: 'BLEU Translation Score (Higher is Better)',
-          data: [28.4, 27.3, 25.1, 24.6],
+          label: 'Latency (ms) — Lower is Better',
+          data: [14.2, 38.6, 45.1, 62.4],
           backgroundColor: ['#0F52BA', '#0A66C2', '#808080', '#CCCCCC'],
           borderRadius: 8
         }]
@@ -714,20 +1012,33 @@
         responsive: true,
         maintainAspectRatio: false,
         plugins: { legend: { display: true, position: 'top' } },
-        scales: { y: { beginAtZero: true, title: { display: true, text: 'BLEU Score' } } }
+        scales: { y: { beginAtZero: true, title: { display: true, text: 'Milliseconds (ms)' } } }
       }
     });
 
     function setPresetUrl(url) {
       document.getElementById('paperUrlInput').value = url;
-      convertPaperUrl();
     }
 
-    async function convertPaperUrl() {
+    function resetToLanding() {
+      document.getElementById('landingScreen').style.display = 'block';
+      document.getElementById('processingScreen').style.display = 'none';
+      document.getElementById('studioWorkspace').style.display = 'none';
+    }
+
+    async function generateScholarPage() {
       const url = document.getElementById('paperUrlInput').value.trim();
       if (!url) return;
 
-      showToast("⏳ Fetching & parsing academic paper link...");
+      // Show Processing Animation
+      document.getElementById('landingScreen').style.display = 'none';
+      document.getElementById('processingScreen').style.display = 'block';
+
+      // Animate Processing Checklist Steps
+      setTimeout(() => { document.getElementById('step3').className = 'step-item done'; document.getElementById('step3').innerText = '✓ Identifying key findings'; }, 400);
+      setTimeout(() => { document.getElementById('step4').className = 'step-item done'; document.getElementById('step4').innerText = '✓ Extracting figures'; }, 800);
+      setTimeout(() => { document.getElementById('step5').className = 'step-item done'; document.getElementById('step5').innerText = '✓ Simplifying technical concepts'; }, 1200);
+      setTimeout(() => { document.getElementById('step6').className = 'step-item active'; document.getElementById('step6').innerText = '→ Building interactive page'; }, 1500);
 
       try {
         const resp = await fetch('/api/parse-paper', {
@@ -737,69 +1048,124 @@
         });
         
         if (resp.ok) {
-          const data = await resp.json();
-          activePaper = data;
-          
-          // Update Preview UI
-          document.getElementById('paperTitle').innerText = data.title;
-          document.getElementById('paperAuthors').innerText = data.authors;
-          document.getElementById('paperInst').innerText = data.institution || "Peer-Reviewed Open Research";
-          document.getElementById('journalBadge').innerText = `📄 Published in ${data.journal}`;
-          document.getElementById('paperDoi').innerText = data.doi;
-
-          // Update Summary according to current slider value
-          updateDensity(document.getElementById('densitySlider').value);
-
-          // Update Chart
-          if (data.chart) {
-            benchmarkChart.data.labels = data.chart.labels;
-            benchmarkChart.data.datasets[0].data = data.chart.data;
-            benchmarkChart.data.datasets[0].label = data.chart.unit || "Metric Score";
-            benchmarkChart.update();
-          }
-
-          // Reset Chat Box
-          const chatBox = document.getElementById('chatBox');
-          chatBox.innerHTML = `<div class="msg-bot">Hi! I am the interactive AI representative for '${data.title}'. Ask me anything about methodology, dataset, or practical takeaways!</div>`;
-
-          showToast("✨ Converted into interactive webpage!");
+          currentPaper = await resp.json();
+          setTimeout(() => {
+            renderScholarPage();
+            document.getElementById('processingScreen').style.display = 'none';
+            document.getElementById('studioWorkspace').style.display = 'grid';
+          }, 1800);
         }
       } catch (err) {
-        showToast("Paper parsed successfully!");
+        showToast("Error generating ScholarPage.");
       }
     }
 
-    // Control Handlers
-    function updateDensity(val) {
-      const summaryText = document.getElementById('summaryText');
-      const indicator = document.getElementById('densityIndicator');
+    function renderScholarPage() {
+      if (!currentPaper) return;
+
+      const meta = currentPaper.metadata;
+      const aud = currentPaper.audiences ? currentPaper.audiences[currentAudience] : null;
+
+      // Title & Meta
+      document.getElementById('paperTitle').innerText = meta.title;
+      document.getElementById('paperAuthors').innerText = meta.authors;
+      document.getElementById('paperJournal').innerText = `${meta.journal} (${meta.year})`;
+      document.getElementById('paperDoi').innerText = meta.doi;
+      document.getElementById('origPaperLink').href = meta.url;
+
+      // One Sentence & Research Question
+      const sentenceText = aud ? aud.one_sentence : currentPaper.one_sentence_summary;
+      document.getElementById('oneSentenceBox').innerText = `Research in One Sentence: ${sentenceText}`;
       
-      if (val == 1) {
-        indicator.innerText = "Showing: Executive Brief Mode";
-        summaryText.innerHTML = `<strong>Executive Brief:</strong> ${activePaper.density_brief || activePaper.density_balanced}`;
-      } else if (val == 2) {
-        indicator.innerText = "Showing: Balanced Mode";
-        summaryText.innerHTML = `<strong>Key Takeaway:</strong> ${activePaper.density_balanced}`;
-      } else {
-        indicator.innerText = "Showing: Full Academic Mode";
-        summaryText.innerHTML = `<strong>Full Formulation:</strong> ${activePaper.density_academic || activePaper.density_balanced}`;
+      const qText = aud ? aud.research_question : currentPaper.research_question;
+      document.getElementById('questionText').innerText = qText;
+
+      // Key Findings Cards
+      const grid = document.getElementById('findingsGrid');
+      grid.innerHTML = '';
+      currentPaper.key_findings.forEach(kf => {
+        const card = document.createElement('div');
+        card.className = 'finding-card';
+        card.innerHTML = `
+          <div class="finding-stat">${kf.metric}</div>
+          <div class="finding-label">${kf.title}</div>
+          <div class="finding-meaning">${kf.meaning}</div>
+          <div class="finding-source" onclick="showSourceTrace('${kf.source}')">View source (${kf.source})</div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // Why This Matters
+      const whyText = aud ? aud.why_it_matters : currentPaper.why_it_matters[currentAudience];
+      document.getElementById('whyItMattersText').innerText = whyText;
+
+      // Figure Section
+      const fig = currentPaper.figure;
+      document.getElementById('figWhatSeeing').innerText = fig.what_you_are_seeing;
+      document.getElementById('figKeyTakeaway').innerText = fig.key_takeaway;
+
+      if (fig.chart) {
+        benchmarkChart.data.labels = fig.chart.labels;
+        benchmarkChart.data.datasets[0].data = fig.chart.data;
+        benchmarkChart.data.datasets[0].label = fig.chart.unit;
+        benchmarkChart.update();
       }
+
+      // Limitations
+      const limList = document.getElementById('limitationsList');
+      limList.innerHTML = '';
+      currentPaper.limitations.forEach(l => {
+        const li = document.createElement('li');
+        li.innerText = l;
+        limList.appendChild(li);
+      });
+
+      // Technical Deep Dive
+      document.getElementById('deepDiveContent').innerText = currentPaper.technical_details;
+
+      // Reset Chat
+      document.getElementById('chatBox').innerHTML = `<div class="msg-bot">Hi! I am the interactive AI representative for '${meta.title}'. Ask me anything!</div>`;
     }
 
-    function setVizMode(mode) {
-      document.getElementById('btnVizInteractive').classList.toggle('active', mode === 'interactive');
-      document.getElementById('btnVizStatic').classList.toggle('active', mode === 'static');
-      
-      document.getElementById('chartView').style.display = mode === 'interactive' ? 'block' : 'none';
-      document.getElementById('staticView').style.display = mode === 'static' ? 'block' : 'none';
-      document.getElementById('vizModeLabel').innerText = mode === 'interactive' ? 'Mode: Interactive Chart.js' : 'Mode: Static SVG Vector';
+    // Customization Handlers
+    function setDetailLevel(level) {
+      currentDetailLevel = level;
+      document.querySelectorAll('#dlQuick, #dlBalanced, #dlDeep').forEach(b => b.classList.remove('active'));
+      document.getElementById(`dl${level.charAt(0).toUpperCase() + level.slice(1)}`).classList.add('active');
+
+      const techMethod = document.getElementById('techMethodContent');
+      const deepDive = document.getElementById('deepDiveSection');
+
+      if (level === 'quick') {
+        techMethod.style.display = 'none';
+        deepDive.style.display = 'none';
+      } else if (level === 'balanced') {
+        techMethod.style.display = 'none';
+        deepDive.style.display = 'block';
+      } else { // deep
+        techMethod.style.display = 'block';
+        deepDive.style.display = 'block';
+        document.getElementById('deepDiveContent').style.display = 'block';
+      }
+      showToast(`Detail Level: ${level.toUpperCase()}`);
     }
 
     function setAudience(aud) {
-      document.getElementById('audIndustry').classList.toggle('active', aud === 'industry');
-      document.getElementById('audStudents').classList.toggle('active', aud === 'students');
-      document.getElementById('audPeers').classList.toggle('active', aud === 'peers');
-      showToast(`Tuned presentation for: ${aud.toUpperCase()}`);
+      currentAudience = aud;
+      document.querySelectorAll('#audGeneral, #audIndustry, #audResearcher').forEach(b => b.classList.remove('active'));
+      document.getElementById(`aud${aud.charAt(0).toUpperCase() + aud.slice(1)}`).classList.add('active');
+      renderScholarPage();
+      showToast(`Tuned explanations for: ${aud.toUpperCase()}`);
+    }
+
+    function setFigureMode(mode) {
+      currentFigureMode = mode;
+      document.querySelectorAll('#figOriginal, #figEnhanced, #figInteractive').forEach(b => b.classList.remove('active'));
+      document.getElementById(`fig${mode.charAt(0).toUpperCase() + mode.slice(1)}`).classList.add('active');
+
+      document.getElementById('chartView').style.display = mode === 'interactive' ? 'block' : 'none';
+      document.getElementById('staticView').style.display = mode !== 'interactive' ? 'block' : 'none';
+      showToast(`Figure Mode: ${mode.toUpperCase()}`);
     }
 
     function setTheme(color, el) {
@@ -811,22 +1177,50 @@
       showToast("Theme updated!");
     }
 
+    function togglePreviewMode() {
+      isFullPreview = !isFullPreview;
+      const sidebar = document.getElementById('controlSidebar');
+      const container = document.getElementById('studioWorkspace');
+      const btn = document.getElementById('btnTogglePreview');
+
+      if (isFullPreview) {
+        sidebar.classList.add('hidden');
+        container.classList.add('full-preview');
+        btn.innerText = "✏️ Show Controls Sidebar";
+      } else {
+        sidebar.classList.remove('hidden');
+        container.classList.remove('full-preview');
+        btn.innerText = "👁️ Preview Page (Hide Controls)";
+      }
+    }
+
+    function toggleTechnicalMethodology() {
+      const content = document.getElementById('techMethodContent');
+      content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function toggleDeepDive() {
+      const content = document.getElementById('deepDiveContent');
+      content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function showSourceTrace(source) {
+      showToast(`📍 Source grounded in paper: ${source}`);
+    }
+
     function copyCitation() {
-      navigator.clipboard.writeText(`${activePaper.authors}. ${activePaper.title}. ${activePaper.journal}. DOI: ${activePaper.doi}`);
+      if (currentPaper) {
+        const m = currentPaper.metadata;
+        navigator.clipboard.writeText(`${m.authors}. (${m.year}). ${m.title}. ${m.journal}. DOI: ${m.doi}`);
+      } else {
+        navigator.clipboard.writeText("Rostova et al. (2026). Transformer Attention Scaling. Nature Machine Intelligence. DOI: 10.1038/s41586-026-08912-x");
+      }
       showToast("Citation copied to clipboard!");
     }
 
     function copyShareLink() {
       navigator.clipboard.writeText(window.location.href);
-      showToast("Interactive page URL copied to clipboard!");
-    }
-
-    function downloadPDF() {
-      showToast("Generating Executive Summary PDF...");
-    }
-
-    function publishPage() {
-      showToast("🚀 Interactive paper page published live!");
+      showToast("Shareable link copied to clipboard!");
     }
 
     function showToast(msg) {
@@ -855,20 +1249,20 @@
       chatBox.appendChild(userDiv);
       input.value = '';
 
-      // Answer using active paper context
+      // Bot answer
       setTimeout(() => {
         const botDiv = document.createElement('div');
         botDiv.className = 'msg-bot';
         
-        if (activePaper.qa && activePaper.qa.length > 0) {
-          botDiv.innerText = activePaper.qa[0].a;
+        if (currentPaper && currentPaper.qa && currentPaper.qa.length > 0) {
+          botDiv.innerText = currentPaper.qa[0].a;
         } else {
-          botDiv.innerText = `Regarding '${activePaper.title}': The paper demonstrates significant empirical improvements across standardized benchmark metrics.`;
+          botDiv.innerText = "Based on the research findings, this paper establishes empirical bounds with high accuracy and reduced compute overhead.";
         }
         
         chatBox.appendChild(botDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
-      }, 600);
+      }, 500);
     }
   </script>
 </body>
